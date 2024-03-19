@@ -47,9 +47,7 @@ end
 
 FuelSlot = 16
 DefaultSlot = 1
-
-function TurtleRefuel(check)
-    --refuel if levels are less than 'check'
+function TurtleRefuel(check) --refuel if levels are less than 'check'
     if (turtle.getFuelLevel() < check) then
         turtle.select(FuelSlot)
         local ok, err = turtle.refuel(1)
@@ -60,16 +58,13 @@ end
 
 
 function Dig3x3() --assumes placed in upper left 
-
-    --dig before each instruction
     local recipe = {
         "R", "R", "dwn",
         "L", "L", "dwn",
-        "R", "R", "fwd"
-    }
+        "R", "R", "fwd" }
 
     for i=1,10,1 do
-        UntilClearDig() Move(recipe[i]) 
+        UntilClearDig() Move(recipe[i]) --dig before each instruction
     end
     for i=10,1,-1 do
         UntilClearDig() Move(recipe[i])
@@ -94,3 +89,9 @@ function DigFancyStairs(dir)
     UntilClearDig("fwd")
     Move("fwd")
 end
+
+--[[ todo 
+    Inventory management
+    Placing blocks, list of which blocks are acceptable to place 
+    cycle through inventory, check each slot
+]]

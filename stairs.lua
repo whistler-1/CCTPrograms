@@ -36,7 +36,7 @@ function DigLR(side) --dir must == L or R
     if turtle.detect() then
         dig = turtle.dig()
     end
-    TurnOppositeOf(side)
+    TurnReverse(side)
     return dig
 end
 
