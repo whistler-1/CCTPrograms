@@ -1,43 +1,43 @@
 
 -------- Turtle Helper functions --------
 
-function TurnAround()
-    turtle.turnRight()
-    turtle.turnRight()
-end
+function IfBlockDig(dir)
+    --Detect & Dig in dir direction. returns bool success
+    --if L / R, digs, then turns back to original rotation
 
-function DigIf(dir) --direction 
-    --Detect, Dig in x direction
-    --if L / R, turns back to original rotation
+    if dir == "up" then
+        if turtle.detectUp() then return turtle.digUp()
+        end
 
-    if (dir == "up") then
-        if(turtle.detectUp()) then return turtle.digUp() end
+    elseif dir == "dwn" then
+        if turtle.detectDown() then return turtle.digDown()
+        end
 
-    elseif(dir == "dwn" or dir == "down") then
-        if(turtle.detectDown()) then return turtle.digDown() end
-
-    elseif(dir == "fwd" or dir == "forward") then
-        if(turtle.detect()) then return turtle.dig() end
-
-    elseif(dir == "L" or dir == "left") then
-        turtle.turnLeft()
-        if(turtle.detect()) then return turtle.dig() end
-        turtle.turnRight()
-
-    elseif(dir == "R" or dir == "right") then
-        turtle.turnRight()
-        if(turtle.detect()) then return turtle.dig() end
-        turtle.turnLeft()
-
-    elseif(dir == "behind") then
-        TurnAround()
-        if(turtle.detect()) then return turtle.dig() end
-        TurnAround()
-
+    elseif dir == "fwd" then
+        if turtle.detect() then return turtle.dig()
+        end
     else
         print("wrong param given to DigIf?")
         return false
     end
+end
+
+function Turn(side) --Right handed turtle
+    if side == "L" then turtle.turnLeft() else turtle.turnRight() end
+end
+
+function TurnReverse(side)
+    if side == "L" then Turn("R") else Turn("L") end
+end
+
+function DigLR(side) --dir must == L or R
+    Turn(side)
+    local dig
+    if turtle.detect() then
+        dig = turtle.dig()
+    end
+    TurnOppositeOf(side)
+    return dig
 end
 
 
@@ -68,7 +68,7 @@ function Move(dir)
     end
 end
 
-function DigUntil(dir) --should dig until nothing is there
+function UntilClearDig(dir) --should dig until nothing is there
 	repeat 
 		DigIf(dir)
 	until (not DigIf(dir))
@@ -112,12 +112,13 @@ function Setup()
 turtle.select(16)
 local fuelcheck = turtle.refuel(0)
 if(fuelcheck == false) then 
-    print("(Before continuing, please put some fuel in my bottom right inventory slot)") print()
+    print("(Before continuing, please put some fuel in my bottom right inventory slot)") print(" ")
 end
 
 
 print("Will I dig 'up' or 'down' ?  ")
-Direction = read()    
+Direction = read()
+if Direction == "down" then Direction = "dwn" end
 
 print("How many blocks will I travel?  ")
 local input
