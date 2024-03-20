@@ -93,7 +93,7 @@ function DigFancyStairs(dir)
     Move("fwd")
 end
 
-function TurtleRefuel(min)
+function Refuel(min)
     --refuel if less than min, takes fuel from slot 16
     if (turtle.getFuelLevel() < min) then
         local prevSlot = turtle.getSelectedSlot()
@@ -142,7 +142,7 @@ end
 Setup()
 
 while Running do
-    TurtleRefuel(4)	 	   
+    Refuel(4)	 	   
 	
 	if(Stairs == "normal") then
 		DigStairs(Direction)
