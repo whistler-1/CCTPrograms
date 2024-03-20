@@ -13,24 +13,28 @@ function Strafe(dir) Turn(dir) Move() TurnReverse(dir) end
 -------- Manage Fuel --------
 FuelSlot = 16 DefaultSlot = 1
 function Refuel(check)
-    if (turtle.getFuelLevel() < check) then turtle.select(FuelSlot)
-        local ok, err = turtle.refuel(1) turtle.select(DefaultSlot) return ok, err
+    FuelLevel = turtle.getFuelLevel()
+    if (FuelLevel < check) then turtle.select(FuelSlot)
+        local ok, err = turtle.refuel(1)
+        turtle.select(DefaultSlot)
+        FuelLevel = turtle.getFuelLevel()
+        return FuelLevel, ok, err
     end
 end
 
 
 -------- Dig --------
 function DigStairs(dir) --dir must be up, dwn or down
-	DigUntil("down")
-    DigUntil("up")
+	DigAll("dwn")
+    DigAll("up")
     Move(dir)
-    DigUntil(dir)
-    DigUntil("fwd")
+    DigAll(dir)
+    DigAll("fwd")
     Move("fwd")
 end
 
 function Dig1x2() --place at floor level
-    DigAll("up") DigAll() Move("fwd")
+    DigAll("up") DigAll("fwd") Move("fwd")
 end
 
 
